@@ -19,6 +19,14 @@ with st.sidebar:
 
 # Asset upload terminal zones
 st.header("Humanization Engine")
+
+# --- Interactive Sliders Brought Back ---
+lip_sharpness = st.slider("Lip Sync Sharpness Multiplier", min_value=1.0, max_value=2.0, value=1.0, step=0.1)
+expression_intensity = st.slider("Expression Intensity", min_value=0, max_value=100, value=45, step=1)
+
+st.checkbox("Natural Blink Engine", value=True)
+st.checkbox("Micro Gaze Humanization", value=True)
+
 singer1 = st.file_uploader("Upload Character Portrait (JPG/PNG):", type=["jpg", "jpeg", "png"])
 audio_track = st.file_uploader("Upload Audio Track (MP3/WAV):", type=["mp3", "wav"])
 
