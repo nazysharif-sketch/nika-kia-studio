@@ -20,7 +20,7 @@ with st.sidebar:
 # Asset upload terminal zones
 st.header("Humanization Engine")
 
-# --- Sliders aligned perfectly to your original layout ---
+# Sliders aligned to your original layout view
 lip_sharpness = st.slider("Lip Sync Sharpness Multiplier", min_value=1, max_value=100, value=100, step=1)
 expression_intensity = st.slider("Expression Intensity", min_value=0, max_value=100, value=45, step=1)
 
@@ -43,7 +43,7 @@ if st.button("🚀 GENERATE MUSIC VIDEO"):
             # Initializes the official Replicate client
             client = replicate.Client(api_token=replicate_api_token)
             
-            # Triggers the premium VEED Fabric image-to-video lipsync engine
+            # Triggers the premium VEED Fabric engine
             output = client.run(
                 "veed/fabric-1.0",
                 input={
@@ -54,10 +54,18 @@ if st.button("🚀 GENERATE MUSIC VIDEO"):
 
             st.success("Render Complete!")
             
-            # Centers the video layout beautifully and dynamically frames it
-            col1, col2, col3 = st.columns([1, 1.5, 1])
+            # Creates custom layout columns to center the output frame
+            col1, col2, col3 = st.columns([1.2, 1, 1.2])
             with col2:
-                st.video(output.url)
+                # Injects custom HTML/CSS to lock the video container to a strict vertical 9:16 aspect ratio
+                st.markdown(
+                    f"""
+                    <div style="width: 100%; max-width: 340px; margin: 0 auto; aspect-ratio: 9 / 16; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                        <video src="{output.url}" controls style="width: 100%; height: 100%; object-fit: cover;"></video>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
         except Exception as e:
             st.error(f"Something went wrong during generation: {e}")
