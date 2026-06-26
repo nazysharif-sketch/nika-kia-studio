@@ -37,15 +37,17 @@ if st.button("🚀 GENERATE MUSIC VIDEO", use_container_width=True):
         audio_track.seek(0)
         
         try:
-            # Triggers the valid devxpy wav2lip model engine
+            # Triggers the highly stable flagship standard wav2lip model
             output = client.run(
-                "devxpy/cog-wav2lip:8d65e3f4f4298520e079198b493c25adfc43c058ffec924f2aefc8010ed25eef",
+                "anotherjesse/wav2lip:cd59223e383186fb96ff17f251a3106195fb644b9fb00be5ddb62fd37f867499",
                 input={
                     "face": singer1,
-                    "audio": audio_track,
-                    "pads": "0 10 0 0"
+                    "audio": audio_track
                 }
             )
+
+            st.success("Render Complete!")
+            st.video(output)
 
             st.success("Render Complete!")
             st.video(output)
