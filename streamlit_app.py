@@ -54,15 +54,20 @@ with col3:
             audio_track.seek(0)
             
             try:
-                # This kicks off the actual AI processing on Replicate's servers
+                # Triggers the optimized cjwbw video-retalking layout engine
                 output = client.run(
-                    "devxpy/cog-wav2lip:8d65e3f4f4298520e079198b493c25adfc43c058ffec924f2aefc8010ed25eef",
+                    "cjwbw/video-retalking:1df0f024db57e4917b2b512c14c62fa6b3064ecfdf49052d9a696238b7762646",
                     input={
                         "face": singer1,
-                        "audio": audio_track,
-                        "pads": "0 10 0 0"  # Automatically helps with natural lip padding
+                        "input_audio": audio_track
                     }
                 )
+
+                st.success("Render Complete!")
+                st.video(output)  # Displays your working video with audio right on your screen!
+
+            except Exception as e:
+                st.error(f"Something went wrong during generation: {e}")
 
                 st.success("Render Complete!")
                 st.video(output)  # Displays your working video with audio right on your screen!
