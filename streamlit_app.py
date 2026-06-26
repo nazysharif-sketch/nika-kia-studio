@@ -54,10 +54,10 @@ with col3:
                 output = client.run(
                     "devxpy/cog-wav2lip:8d65e3f4f4298520e079198b493c25adfc43c058ffec924f2aefc8010ed25eef",
                     input={
-                        "face": singer1,
-                        "audio": audio_track,
-                        "pads": "0 10 0 0"  # Automatically helps with natural lip padding
-                    }
+            "face": singer1.getvalue(),
+            "audio": audio_track.getvalue(),
+            "pads": "0 10 0 0" # Automatically helps with natural lip padding
+        }
                 )
                 
                 st.success("Render Complete!")
