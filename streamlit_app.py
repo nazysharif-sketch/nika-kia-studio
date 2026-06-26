@@ -1,7 +1,7 @@
 import streamlit as st
 import replicate
 import os
-os.environ["REPLICATE_API_TOKEN"] = st.secrets["REPLICATE_API_TOKEN"]
+client = replicate.Client(api_token=st.secrets["REPLICATE_API_TOKEN"])
 
 st.set_page_config(page_title="Nika & Kia Studio", page_icon="🎤", layout="wide")
 st.title("Nika & Kia Studio 🎤")
@@ -51,7 +51,7 @@ with col3:
             
             try:
                 # This kicks off the actual AI processing on Replicate's servers
-                output = replicate.run(
+                output = output = client.run(
                     "anotherjesse/wav2lip:c088b783", 
                     input={
                         "face": singer1,
