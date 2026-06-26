@@ -48,16 +48,19 @@ with col3:
             st.error("Missing Assets! Please make sure you have uploaded at least Singer 1's image and an audio track.")
         else:
             st.warning("Connecting to Replicate servers... Processing humanized lip-sync animation.")
-            
+            singer1.seek(0)
+     audio_track.seek(0)
+
+     try:
             try:
                 # This kicks off the actual AI processing on Replicate's servers
                 output = client.run(
                     "devxpy/cog-wav2lip:8d65e3f4f4298520e079198b493c25adfc43c058ffec924f2aefc8010ed25eef",
                     input={
-            "face": singer1.getvalue(),
-            "audio": audio_track.getvalue(),
-            "pads": "0 10 0 0" # Automatically helps with natural lip padding
-        }
+         "face": singer1,
+         "audio": audio_track,
+         "pads": "0 10 0 0"  # Automatically helps with natural lip padding
+     }
                 )
                 
                 st.success("Render Complete!")
