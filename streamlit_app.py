@@ -12,7 +12,7 @@ st.subheader("Advanced Lip-Sync & Humanization Terminal")
 # --- 2. TOP BAR: MODE SELECTOR ---
 mode = st.radio("Project Mode", ["Solo Mode", "Duet Mode"], horizontal=True)
 
-# --- 3. SIDEBAR / UPLOADERS ---
+# --- 3. SIDEBAR / UPLOADERS ---.
 st.sidebar.header("Upload Media Assets")
 singer1 = st.sidebar.file_uploader("Upload Singer 1 Image", type=["jpg", "jpeg", "png"])
 audio_track = st.sidebar.file_uploader("Upload Audio Track", type=["wav", "mp3"])
