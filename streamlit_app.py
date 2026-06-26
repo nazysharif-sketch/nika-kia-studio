@@ -51,7 +51,7 @@ with col3:
             
             try:
                 # This kicks off the actual AI processing on Replicate's servers
-                output = output = client.run(
+                output = client.run(
                     "anotherjesse/wav2lip:c088b783", 
                     input={
                         "face": singer1,
