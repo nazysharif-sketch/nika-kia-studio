@@ -48,10 +48,10 @@ if st.button("🚀 GENERATE MUSIC VIDEO", use_container_width=True):
 
             st.success("Render Complete!")
             
-            # Creates a centered frame so the video doesn't stretch huge across the screen
+            # Centers the video and keeps it down to a beautiful, clean layout size
             col1, col2, col3 = st.columns([1, 2, 1])
             with col2:
-                st.video(output[0].url)
+                st.video(output.url)
 
         except Exception as e:
             st.error(f"Something went wrong during generation: {e}")
