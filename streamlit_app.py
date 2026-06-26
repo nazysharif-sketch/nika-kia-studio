@@ -47,7 +47,8 @@ if st.button("🚀 GENERATE MUSIC VIDEO", use_container_width=True):
             )
 
             st.success("Render Complete!")
-            st.video(output)
+            # Converts the Replicate file object into a readable web link for Streamlit
+            st.video(output.url)
 
         except Exception as e:
             st.error(f"Something went wrong during generation: {e}")
