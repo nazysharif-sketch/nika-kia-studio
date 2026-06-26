@@ -48,11 +48,10 @@ if st.button("🚀 GENERATE MUSIC VIDEO", use_container_width=True):
 
             st.success("Render Complete!")
             
-            # Centers the video and locks it to a standard mobile portrait ratio
+            # Centers the video layout beautifully
             col1, col2, col3 = st.columns([1, 1.5, 1])
             with col2:
-                st.video(output.url, width=360)
-
+                st.video(output.url)
         except Exception as e:
             st.error(f"Something went wrong during generation: {e}")
 
