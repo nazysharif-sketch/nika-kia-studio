@@ -48,7 +48,7 @@ if st.button("🚀 GENERATE MUSIC VIDEO", use_container_width=True):
 
             st.success("Render Complete!")
             
-            # Centers the video layout and locks it to a beautiful, clean presentation size
+            # Centers the video layout and links it cleanly to the web url
             col1, col2, col3 = st.columns([1, 1.5, 1])
             with col2:
                 st.video(output.url)
