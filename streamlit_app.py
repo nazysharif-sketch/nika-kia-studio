@@ -19,7 +19,7 @@ audio_track = st.sidebar.file_uploader("Upload Audio Track", type=["wav", "mp3"]
 
 # --- 4. HUMANIZATION ENGINE OPTIONS ---
 st.header("Humanization Engine")
-st.slider("Lib Sync Sharpness Multiplier", min_value=0, max_value=100, value=100)
+st.slider("Lip Sync Sharpness Multiplier", min_value=0, max_value=100, value=100)
 st.slider("Expression Intensity", min_value=0, max_value=100, value=45)
 st.checkbox("Natural Blink Engine", value=True)
 st.checkbox("Micro Gaze Humanization", value=True)
@@ -37,9 +37,9 @@ if st.button("🚀 GENERATE MUSIC VIDEO", use_container_width=True):
         audio_track.seek(0)
         
         try:
-            # Triggers the official Sync Labs engine using the exact dictionary schema layout
+            # Triggers the official flagship Sync Labs lipsync-2 engine natively
             output = client.run(
-                "sync/lipsync-2:66386345fc5b34da5a45217b189b82f0677499fb00be5ddb62fd37f867499",
+                "sync/lipsync-2",
                 input={
                     "video": singer1,
                     "audio": audio_track
@@ -48,17 +48,6 @@ if st.button("🚀 GENERATE MUSIC VIDEO", use_container_width=True):
 
             st.success("Render Complete!")
             st.video(output)
-
-            st.success("Render Complete!")
-            st.video(output)
-            st.success("Render Complete!")
-            st.video(output)
-
-            st.success("Render Complete!")
-            st.video(output)
-
-            st.success("Render Complete!")
-            st.video(output)  # Displays your working video with audio right on your screen!
 
         except Exception as e:
             st.error(f"Something went wrong during generation: {e}")
