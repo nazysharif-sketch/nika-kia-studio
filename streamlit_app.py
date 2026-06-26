@@ -37,15 +37,17 @@ if st.button("🚀 GENERATE MUSIC VIDEO", use_container_width=True):
         audio_track.seek(0)
         
         try:
-            # Triggers the highly stable flagship standard wav2lip model
+            # Triggers the official, rock-solid Sync Labs Lipsync-2 engine
             output = client.run(
-                "anotherjesse/wav2lip:cd59223e383186fb96ff17f251a3106195fb644b9fb00be5ddb62fd37f867499",
+                "sync/lipsync-2:66386345fc5b34da5a45217b189b82f0677499fb00be5ddb62fd37f867499",
                 input={
-                    "face": singer1,
+                    "video": singer1,
                     "audio": audio_track
                 }
             )
 
+            st.success("Render Complete!")
+            st.video(output)
             st.success("Render Complete!")
             st.video(output)
 
