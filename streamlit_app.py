@@ -42,27 +42,30 @@ with col3:
     st.header("Master Render")
     resolution = st.selectbox("Select Render Quality", ["Download Full HD (1080p)", "Download Ultra HD (4K Master)"])
     
-    # THE MAIN GENERATE BUTTON
+    # --- 5. THE MAIN GENERATE BUTTON ---
     if st.button("🚀 GENERATE MUSIC VIDEO", use_container_width=True):
         if not singer1 or not audio_track:
             st.error("Missing Assets! Please make sure you have uploaded at least Singer 1's image and an audio track.")
         else:
             st.warning("Connecting to Replicate servers... Processing humanized lip-sync animation.")
+            
+            # Rewind file buffers so Replicate reads them cleanly from the start
             singer1.seek(0)
             audio_track.seek(0)
+            
             try:
-            # This kicks off the actual AI processing on Replicate's servers
-            output = client.run(
-                "devxpy/cog-wav2lip:8d65e3f4f4298520e079198b493c25adfc43c058ffec924f2aefc8010ed25eef",
-                input={
-                    "face": singer1,
-                    "audio": audio_track,
-                    "pads": "0 10 0 0"  # Automatically helps with natural lip padding
-                }
-            )
+                # This kicks off the actual AI processing on Replicate's servers
+                output = client.run(
+                    "devxpy/cog-wav2lip:8d65e3f4f4298520e079198b493c25adfc43c058ffec924f2aefc8010ed25eef",
+                    input={
+                        "face": singer1,
+                        "audio": audio_track,
+                        "pads": "0 10 0 0"  # Automatically helps with natural lip padding
+                    }
+                )
 
-            st.success("Render Complete!")
-            st.video(output) # Displays your working video with audio right on your screen!
-                
+                st.success("Render Complete!")
+                st.video(output)  # Displays your working video with audio right on your screen!
+
             except Exception as e:
                 st.error(f"Something went wrong during generation: {e}")
