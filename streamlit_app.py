@@ -48,9 +48,8 @@ with col3:
             st.error("Missing Assets! Please make sure you have uploaded at least Singer 1's image and an audio track.")
         else:
             st.warning("Connecting to Replicate servers... Processing humanized lip-sync animation.")
-            singer1.seek(0)
+     singer1.seek(0)
      audio_track.seek(0)
-
      try:
             try:
                 # This kicks off the actual AI processing on Replicate's servers
