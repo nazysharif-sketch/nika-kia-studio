@@ -37,14 +37,20 @@ if st.button("🚀 GENERATE MUSIC VIDEO", use_container_width=True):
         audio_track.seek(0)
         
         try:
-            # Triggers the official flagship Sync Labs lipsync-2 engine natively
+            # Re-ordered keys to strictly match Replicate's official endpoint blueprint
             output = client.run(
-                "sync/lipsync-2",
+                "veed/fabric-1.0",
                 input={
-                    "video": singer1,
-                    "audio": audio_track
+                    "audio": audio_track,
+                    "image": singer1
                 }
             )
+
+            st.success("Render Complete!")
+            st.video(output)
+
+        except Exception as e:
+            st.error(f"Something went wrong during generation: {e}")
 
             st.success("Render Complete!")
             st.video(output)
