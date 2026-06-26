@@ -37,14 +37,18 @@ if st.button("🚀 GENERATE MUSIC VIDEO", use_container_width=True):
         audio_track.seek(0)
         
         try:
-            # Triggers the optimized flagship cjwbw wav2lip engine
+            # Triggers the valid devxpy wav2lip model engine
             output = client.run(
-                "cjwbw/wav2lip:d01b403031eaaacdc72ab99d0e2e0e56114a84de60db2a26569106037a346e63",
+                "devxpy/cog-wav2lip:8d65e3f4f4298520e079198b493c25adfc43c058ffec924f2aefc8010ed25eef",
                 input={
                     "face": singer1,
-                    "audio": audio_track
+                    "audio": audio_track,
+                    "pads": "0 10 0 0"
                 }
             )
+
+            st.success("Render Complete!")
+            st.video(output)
 
             st.success("Render Complete!")
             st.video(output)  # Displays your working video with audio right on your screen!
