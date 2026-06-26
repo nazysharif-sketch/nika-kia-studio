@@ -1,7 +1,7 @@
 import streamlit as st
 import replicate
 import os
-REPLICATE_API_TOKEN = "r8_JC350Kqfmg01BKNKkjxOFMrMj0kJyRu0PTsnN"
+os.environ["REPLICATE_API_TOKEN"] = st.secrets["REPLICATE_API_TOKEN"]
 
 st.set_page_config(page_title="Nika & Kia Studio", page_icon="🎤", layout="wide")
 st.title("Nika & Kia Studio 🎤")
