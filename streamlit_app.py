@@ -12,7 +12,7 @@ st.subheader("Advanced Lip-Sync & Humanization Terminal")
 # --- 2. TOP BAR: MODE SELECTOR ---
 mode = st.radio("Project Mode", ["Solo Mode", "Duet Mode"], horizontal=True)
 
-# --- 3. SIDEBAR / UPLOADERS ---.
+# --- 3. SIDEBAR / UPLOADERS ---
 st.sidebar.header("Upload Media Assets")
 singer1 = st.sidebar.file_uploader("Upload Singer 1 Image", type=["jpg", "jpeg", "png"])
 audio_track = st.sidebar.file_uploader("Upload Audio Track", type=["wav", "mp3"])
@@ -37,12 +37,12 @@ if st.button("🚀 GENERATE MUSIC VIDEO", use_container_width=True):
         audio_track.seek(0)
         
         try:
-            # Triggers the optimized cjwbw video-retalking layout engine
+            # Triggers the optimized flagship cjwbw wav2lip engine
             output = client.run(
-                "cjwbw/video-retalking:1df0f024db57e4917b2b512c14c62fa6b3064ecfdf49052d9a696238b7762646",
+                "cjwbw/wav2lip:d01b403031eaaacdc72ab99d0e2e0e56114a84de60db2a26569106037a346e63",
                 input={
                     "face": singer1,
-                    "input_audio": audio_track
+                    "audio": audio_track
                 }
             )
 
