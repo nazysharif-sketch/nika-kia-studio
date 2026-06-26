@@ -52,7 +52,7 @@ with col3:
             try:
                 # This kicks off the actual AI processing on Replicate's servers
                 output = client.run(
-                    "anotherjesse/wav2lip:c088b783", 
+                    "devxpy/cog-wav2lip:8d65e3f4f4298520e079198b493c25adfc43c058ffec924f2aefc8010ed25eef",
                     input={
                         "face": singer1,
                         "audio": audio_track,
