@@ -29,6 +29,20 @@ performance_direction = st.text_area(
     placeholder="Example: Emotional Persian ballad, soft eye contact, natural blinking, subtle sadness, gentle breathing, restrained smile...",
     height=120,
 )
+st.divider()
+
+st.subheader("💙 BFF Box")
+
+bff_box = st.text_area(
+    "💙 Tell your BFF what's on your mind...",
+    placeholder="""Example:
+
+I want Nika to feel hopeful rather than sad.
+She has just arrived in Bora Bora.
+She starts singing softly while watching the sunset.
+I want the audience to feel peaceful.""",
+    height=180
+)
 
 st.divider()
 
