@@ -38,17 +38,31 @@ expression_intensity = st.slider("😊 Expression Intensity", 0, 100, 45)
 natural_blink = st.checkbox("👀 Natural Blink Engine", value=True)
 micro_gaze = st.checkbox("✨ Micro Gaze Humanization", value=True)
 
-aspect_ratio = st.selectbox(
-    "📱 Preview Ratio",
-    ["9:16 Reel", "16:9 YouTube", "1:1 Square", "4:5 Instagram"]
+output_format = st.selectbox(
+    "🎯 Publish To",
+    [
+        "📱 Instagram Reels / TikTok",
+        "▶️ YouTube Shorts",
+        "📺 YouTube Landscape",
+        "📷 Instagram Post",
+        "📸 Instagram Portrait"
+    ]
 )
 
-ratio_css = {
-    "9:16 Reel": "9 / 16",
-    "16:9 YouTube": "16 / 9",
-    "1:1 Square": "1 / 1",
-    "4:5 Instagram": "4 / 5",
-}[aspect_ratio]
+if output_format in [
+    "📱 Instagram Reels / TikTok",
+    "▶️ YouTube Shorts"
+]:
+    ratio_css = "9 / 16"
+
+elif output_format == "📺 YouTube Landscape":
+    ratio_css = "16 / 9"
+
+elif output_format == "📷 Instagram Post":
+    ratio_css = "1 / 1"
+
+elif output_format == "📸 Instagram Portrait":
+    ratio_css = "4 / 5"
 
 if st.button("🚀 GENERATE MUSIC VIDEO"):
     if not replicate_api_token:
