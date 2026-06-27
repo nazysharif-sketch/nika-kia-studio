@@ -2,35 +2,54 @@ import streamlit as st
 import replicate
 import os
 
-# Set up your page layout and studio title
 st.set_page_config(page_title="Nika & Kia Studio 🎤", layout="wide")
+
 st.title("Nika & Kia Studio 🎤")
 st.subheader("Advanced Lip-Sync & Humanization Terminal")
 
-# Sidebar for API key authentication
 with st.sidebar:
     st.header("Authentication")
     replicate_api_token = st.text_input("Enter Replicate API Token:", type="password")
+
     if replicate_api_token:
         os.environ["REPLICATE_API_TOKEN"] = replicate_api_token
         st.success("API Token locked in!")
     else:
-        st.warning("Please enter your token to activate the studio backend.")
+        st.warning("Enter token to activate backend.")
 
-# Asset upload terminal zones
-st.header("Humanization Engine")
+st.header("🎬 Performance Studio")
 
-# Sliders aligned to your original layout view
-lip_sharpness = st.slider("Lip Sync Sharpness Multiplier", min_value=1, max_value=100, value=100, step=1)
-expression_intensity = st.slider("Expression Intensity", min_value=0, max_value=100, value=45, step=1)
+singer1 = st.file_uploader("📷 Upload Character Portrait", type=["jpg", "jpeg", "png"])
+audio_track = st.file_uploader("🎵 Upload Audio Track", type=["mp3", "wav"])
 
-st.checkbox("Natural Blink Engine", value=True)
-st.checkbox("Micro Gaze Humanization", value=True)
+st.divider()
 
-singer1 = st.file_uploader("Upload Character Portrait (JPG/PNG):", type=["jpg", "jpeg", "png"])
-audio_track = st.file_uploader("Upload Audio Track (MP3/WAV):", type=["mp3", "wav"])
+performance_direction = st.text_area(
+    "🎭 Performance Direction",
+    placeholder="Example: Emotional Persian ballad, soft eye contact, natural blinking, subtle sadness, gentle breathing, restrained smile...",
+    height=120,
+)
 
-# Trigger generation pipeline
+st.divider()
+
+lip_sharpness = st.slider("👄 Lip Sync Sharpness", 1, 100, 70)
+expression_intensity = st.slider("😊 Expression Intensity", 0, 100, 45)
+
+natural_blink = st.checkbox("👀 Natural Blink Engine", value=True)
+micro_gaze = st.checkbox("✨ Micro Gaze Humanization", value=True)
+
+aspect_ratio = st.selectbox(
+    "📱 Preview Ratio",
+    ["9:16 Reel", "16:9 YouTube", "1:1 Square", "4:5 Instagram"]
+)
+
+ratio_css = {
+    "9:16 Reel": "9 / 16",
+    "16:9 YouTube": "16 / 9",
+    "1:1 Square": "1 / 1",
+    "4:5 Instagram": "4 / 5",
+}[aspect_ratio]
+
 if st.button("🚀 GENERATE MUSIC VIDEO"):
     if not replicate_api_token:
         st.error("Authentication Error: Missing API Token in the sidebar.")
@@ -38,34 +57,50 @@ if st.button("🚀 GENERATE MUSIC VIDEO"):
         st.error("Asset Error: Both a character portrait and an audio track are required.")
     else:
         st.warning("Connecting to Replicate servers... Processing humanized lip-sync animation.")
-        
+
         try:
-            # Initializes the official Replicate client
             client = replicate.Client(api_token=replicate_api_token)
-            
-            # Triggers the premium VEED Fabric engine
+
             output = client.run(
                 "veed/fabric-1.0",
                 input={
                     "audio": audio_track,
-                    "image": singer1
+                    "image": singer1,
                 }
             )
 
+            video_url = output.url if hasattr(output, "url") else str(output)
+
             st.success("Render Complete!")
-            
-            # Creates custom layout columns to center the output frame
-            col1, col2, col3 = st.columns([1.2, 1, 1.2])
+
+            col1, col2, col3 = st.columns([1, 1, 1])
+
             with col2:
-                # Injects custom HTML/CSS to lock the video container to a strict vertical 9:16 aspect ratio
                 st.markdown(
                     f"""
-                    <div style="width: 100%; max-width: 340px; margin: 0 auto; aspect-ratio: 9 / 16; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-                        <video src="{output.url}" controls style="width: 100%; height: 100%; object-fit: cover;"></video>
+                    <div style="
+                        width: 100%;
+                        max-width: 360px;
+                        margin: 0 auto;
+                        aspect-ratio: {ratio_css};
+                        overflow: hidden;
+                        border-radius: 18px;
+                        background: #111;
+                        box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+                    ">
+                        <video src="{video_url}" controls
+                        style="
+                            width: 100%;
+                            height: 100%;
+                            object-fit: contain;
+                            background: #111;
+                        "></video>
                     </div>
                     """,
                     unsafe_allow_html=True
                 )
+
+            st.markdown(f"[Open video result]({video_url})")
 
         except Exception as e:
             st.error(f"Something went wrong during generation: {e}")
