@@ -70,13 +70,13 @@ if output_format in [
     preview_ratio = "9 / 16"
 
 elif output_format == "📺 YouTube Landscape":
-    ratio_css = "16 / 9"
+    preview_ratio = "16 / 9"
 
 elif output_format == "📷 Instagram Post":
-    ratio_css = "1 / 1"
+    preview_ratio = "1 / 1"
 
 elif output_format == "📸 Instagram Portrait":
-    ratio_css = "4 / 5"
+    preview_ratio = "4 / 5"
 
 if st.button("🚀 GENERATE MUSIC VIDEO"):
     if not replicate_api_token:
@@ -110,7 +110,7 @@ if st.button("🚀 GENERATE MUSIC VIDEO"):
                         width: 100%;
                         max-width: 360px;
                         margin: 0 auto;
-                        aspect-ratio: {ratio_css};
+                        aspect-ratio: {preview_ratio};
                         overflow: hidden;
                         border-radius: 18px;
                         background: #111;
