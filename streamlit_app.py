@@ -53,7 +53,7 @@ if output_format in [
     "📱 Instagram Reels / TikTok",
     "▶️ YouTube Shorts"
 ]:
-    ratio_css = "9 / 16"
+    preview_ratio = "9 / 16"
 
 elif output_format == "📺 YouTube Landscape":
     ratio_css = "16 / 9"
