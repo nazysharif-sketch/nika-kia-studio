@@ -89,30 +89,18 @@ if st.button("🚀 GENERATE MUSIC VIDEO"):
         try:
             client = replicate.Client(api_token=replicate_api_token)
 
-            # 🛠️ STRATEGY: Constructing a combined prompt parameter
-            # This merges all UI controls into a single, clean text instruction block
-            compiled_instructions = (
-                f"[PERFORMANCE DIRECTION]: {performance_direction}\n"
-                f"[SCENE CONTEXT]: {bff_box}\n"
-                f"[SYSTEM METRICS]: Lip Sharpness: {lip_sharpness}%, "
-                f"Expression Intensity: {expression_intensity}%, "
-                f"Natural Blink: {natural_blink}, Micro Gaze: {micro_gaze}"
-            )
+            compiled_prompt = f"{bff_box}\n\n[Performance Direction & Physics Controls]: {performance_direction}"
 
-            # Construct your Replicate payload dynamically
+            # 🛠️ 2. Direct the fields to Kling's specific API parameters
             api_input = {
-                "audio": audio_track,
-                "image": singer1,
-                # If your model accepts text instructions, we inject them smoothly here:
-                "prompt": compiled_instructions, 
-                
-                # NOTE: If your specific model accepts separate numeric inputs for expressions, 
-                # you can map them like this:
-                # "expression_scale": expression_intensity / 100.0 
+                "prompt": compiled_prompt,
+                "image": singer1,      # Passes Nika's character portrait
+                "duration": 5          # Generates a premium 5-second cinematic clip
             }
 
+            # 🛠️ 3. Wake up the Kling 3.0 Omni machine instead of VEED
             output = client.run(
-                "veed/fabric-1.0",
+                "kwaivgi/kling-v3-omni-video",
                 input=api_input
             )
 
