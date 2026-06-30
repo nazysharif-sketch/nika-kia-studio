@@ -89,25 +89,14 @@ if st.button("🚀 GENERATE MUSIC VIDEO"):
         try:
             client = replicate.Client(api_token=replicate_api_token)
 
-            compiled_prompt = f"{bff_box}\n\n[Performance Direction & Physics Controls]: {performance_direction}"
-
-            # 🛠️ 2. Direct the fields to Kling's specific API parameters
-            api_input = {
-                "prompt": compiled_prompt,
-                "image": singer1,      # Passes Nika's character portrait
-                "duration": 5          # Generates a premium 5-second cinematic clip
-            }
-
-            # 🛠️ 3. Wake up the Kling 3.0 Omni machine instead of VEED
             output = client.run(
-    "kwaivgi/kling-v3-omni-video",
-    input={
-        "prompt": compiled_prompt,
-        "input_image": singer1,    # Explicitly lock her photo here!
-        "duration": 10,            # Force it to match your 10-second humming track!
-        "aspect_ratio": "9:16"
-    }
-)
+                "veed/fabric-1.0",
+                input={
+                    "audio": audio_track,
+                    "image": singer1,
+                }
+            )
+
             video_url = output.url if hasattr(output, "url") else str(output)
 
             st.success("Render Complete!")
