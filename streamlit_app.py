@@ -1,134 +1,47 @@
 import streamlit as st
 import replicate
-import os
 
-st.set_page_config(page_title="Nika & Kia Studio 🎤", layout="wide")
+# 1. Clear, streamlined UI for your core parameters
+st.title("Nika AI Performance Dashboard 🎬")
+st.subheader("Option A: Expression & Native Gesture Engine")
 
-st.title("Nika & Kia Studio 🎤")
-st.subheader("Advanced Lip-Sync & Humanization Terminal")
+singer1 = st.file_uploader("Upload Nika's Reference Image", type=["jpg", "png", "jpeg"])
+audio_track = st.file_uploader("Upload Persian Humming Audio Track", type=["mp3", "wav", "mp4"])
 
-with st.sidebar:
-    st.header("Authentication")
-    replicate_api_token = st.text_input("Enter Replicate API Token:", type="password")
-
-    if replicate_api_token:
-        os.environ["REPLICATE_API_TOKEN"] = replicate_api_token
-        st.success("API Token locked in!")
-    else:
-        st.warning("Enter token to activate backend.")
-
-st.header("🎬 Performance Studio")
-
-singer1 = st.file_uploader("📷 Upload Character Portrait", type=["jpg", "jpeg", "png"])
-audio_track = st.file_uploader("🎵 Upload Audio Track", type=["mp3", "wav"])
-
-st.divider()
-
-performance_direction = st.text_area(
-    "🎭 Performance Direction",
-    placeholder="Example: Emotional Persian ballad, soft eye contact, natural blinking, subtle sadness, gentle breathing, restrained smile...",
-    height=120,
-)
-st.divider()
-
-st.subheader("💙 BFF Box")
-
-bff_box = st.text_area(
-    "💙 Tell your BFF what's on your mind...",
-    placeholder="""Example:
-
-I want Nika to feel hopeful rather than sad.
-She has just arrived in Bora Bora.
-She starts singing softly while watching the sunset.
-I want the audience to feel peaceful.""",
-    height=180
+# 🛠️ THE NEW DIRECT INTENSITY DIAL:
+# Pushing this to the lower end (1.5 - 1.9) opens up the tracking window to allow big arm movements.
+# Pushing this to the higher end (2.5 - 3.0) tightens the frame to keep her incredibly steady.
+motion_dynamics = st.slider(
+    "Performance Movement Dynamics", 
+    min_value=1.5, 
+    max_value=3.0, 
+    value=2.3, 
+    step=0.1,
+    help="Lower values expand the canvas allowing her arms to gesture dynamically with the audio swells."
 )
 
-st.divider()
-
-lip_sharpness = st.slider("👄 Lip Sync Sharpness", 1, 100, 70)
-expression_intensity = st.slider("😊 Expression Intensity", 0, 100, 45)
-
-natural_blink = st.checkbox("👀 Natural Blink Engine", value=True)
-micro_gaze = st.checkbox("✨ Micro Gaze Humanization", value=True)
-
-output_format = st.selectbox(
-    "🎯 Publish To",
-    [
-        "📱 Instagram Reels / TikTok",
-        "▶️ YouTube Shorts",
-        "📺 YouTube Landscape",
-        "📷 Instagram Post",
-        "📸 Instagram Portrait"
-    ]
-)
-
-if output_format in [
-    "📱 Instagram Reels / TikTok",
-    "▶️ YouTube Shorts"
-]:
-    preview_ratio = "9 / 16"
-
-elif output_format == "📺 YouTube Landscape":
-    preview_ratio = "16 / 9"
-
-elif output_format == "📷 Instagram Post":
-    preview_ratio = "1 / 1"
-
-elif output_format == "📸 Instagram Portrait":
-    preview_ratio = "4 / 5"
-
-if st.button("🚀 GENERATE MUSIC VIDEO"):
-    if not replicate_api_token:
-        st.error("Authentication Error: Missing API Token in the sidebar.")
-    elif not singer1 or not audio_track:
-        st.error("Asset Error: Both a character portrait and an audio track are required.")
-    else:
-        st.warning("Connecting to Replicate servers... Processing humanized lip-sync animation.")
-
-        try:
-            client = replicate.Client(api_token=replicate_api_token)
-
-            output = client.run(
-                "veed/fabric-1.0",
+if st.button("Generate Performance"):
+    if singer1 and audio_track:
+        with st.spinner("Processing native audio physics..."):
+            
+            # 2. Securely execute the targeted Replicate run
+            output = replicate.run(
+                "okaris/live-portrait:8be2edeab144ba0865f9fa84168f621ee417a2003db947802f900519f7c43300",
                 input={
-                    "audio": audio_track,
-                    "image": singer1,
+                    "source_image": singer1,
+                    "driving_audio": audio_track,
+                    "flag_stitching": True,
+                    "flag_remap": True,
+                    
+                    # Target Nika explicitly and freeze the pianist
+                    "input_face_index": 0, 
+                    
+                    # Driven directly by your new frontend slider control!
+                    "scale": motion_dynamics,
+                    "vy_ratio": -0.125
                 }
             )
-
-            video_url = output.url if hasattr(output, "url") else str(output)
-
-            st.success("Render Complete!")
-
-            col1, col2, col3 = st.columns([1, 1, 1])
-
-            with col2:
-                st.markdown(
-                    f"""
-                    <div style="
-                        width: 100%;
-                        max-width: 360px;
-                        margin: 0 auto;
-                        aspect-ratio: {preview_ratio};
-                        overflow: hidden;
-                        border-radius: 18px;
-                        background: #111;
-                        box-shadow: 0 8px 30px rgba(0,0,0,0.35);
-                    ">
-                        <video src="{video_url}" controls
-                        style="
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                            background: #111;
-                        "></video>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-            st.markdown(f"[Open video result]({video_url})")
-
-        except Exception as e:
-            st.error(f"Something went wrong during generation: {e}")
+            
+            st.video(output)
+    else:
+        st.warning("Please upload both an image and an audio track to begin.")
