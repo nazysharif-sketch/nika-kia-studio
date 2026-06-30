@@ -89,12 +89,31 @@ if st.button("🚀 GENERATE MUSIC VIDEO"):
         try:
             client = replicate.Client(api_token=replicate_api_token)
 
+            # 🛠️ STRATEGY: Constructing a combined prompt parameter
+            # This merges all UI controls into a single, clean text instruction block
+            compiled_instructions = (
+                f"[PERFORMANCE DIRECTION]: {performance_direction}\n"
+                f"[SCENE CONTEXT]: {bff_box}\n"
+                f"[SYSTEM METRICS]: Lip Sharpness: {lip_sharpness}%, "
+                f"Expression Intensity: {expression_intensity}%, "
+                f"Natural Blink: {natural_blink}, Micro Gaze: {micro_gaze}"
+            )
+
+            # Construct your Replicate payload dynamically
+            api_input = {
+                "audio": audio_track,
+                "image": singer1,
+                # If your model accepts text instructions, we inject them smoothly here:
+                "prompt": compiled_instructions, 
+                
+                # NOTE: If your specific model accepts separate numeric inputs for expressions, 
+                # you can map them like this:
+                # "expression_scale": expression_intensity / 100.0 
+            }
+
             output = client.run(
                 "veed/fabric-1.0",
-                input={
-                    "audio": audio_track,
-                    "image": singer1,
-                }
+                input=api_input
             )
 
             video_url = output.url if hasattr(output, "url") else str(output)
