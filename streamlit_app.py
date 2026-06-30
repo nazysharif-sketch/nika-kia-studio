@@ -19,13 +19,13 @@ if st.button("Generate Performance"):
     if singer1 and audio_track:
         with st.spinner("VEED Fabric 1.0 calculating vocal physics..."):
             try:
-                # 2. Stable API implementation
+                # 🛠️ THE FIX: Removed the specific hash so it automatically hits the live public version
                 output = replicate.run(
-                    "veed/fabric-1.0:7e0cb3a0d5109b0a1d47a3297a7e8ea13d33261cb17fa830d17d591f7c43300a",
+                    "veed/fabric-1.0",
                     input={
                         "image": singer1,
                         "audio": audio_track,
-                        "resolution": "720p"  # Pristine HD quality for maximum engagement
+                        "resolution": "720p"  
                     }
                 )
                 
