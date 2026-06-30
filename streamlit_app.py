@@ -45,10 +45,59 @@ I want the audience to feel peaceful.""",
 )
 
 st.divider()
+def get_performance_energy_prompt(energy=50):
+    value = int(energy)
 
+    if value <= 20:
+        return """
+Minimal body movement.
+Natural breathing only.
+Tiny shoulder motion.
+Very subtle head movement.
+No dramatic gestures.
+"""
+
+    if value <= 50:
+        return """
+Natural singer body movement.
+Gentle weight shifts between both feet.
+Relaxed knees.
+Soft shoulder movement with breathing.
+Small head movement following the melody.
+Occasional subtle hand movement.
+Never appear frozen.
+"""
+
+    if value <= 80:
+        return """
+Professional live singer movement.
+Continuous natural body movement.
+Gentle hip sway following the rhythm.
+Natural weight transfer between feet.
+Relaxed knees.
+Soft torso movement.
+Shoulders move naturally with breathing.
+Free hand moves with elegant wrist and finger gestures.
+Microphone hand subtly adjusts grip.
+Occasionally tilt the microphone stand a few degrees during emotional phrases.
+Never appear stiff or frozen.
+"""
+
+    return """
+High-energy concert performance.
+Strong natural stage presence.
+Continuous full-body movement.
+Clear hip sway and weight shifts.
+Expressive shoulders and torso movement.
+Both arms move naturally with the music.
+Free hand uses elegant emotional gestures.
+Microphone hand occasionally tilts the microphone stand.
+During high notes, lift chin slightly, tilt head back gently, close eyes naturally, then return smoothly.
+Powerful but elegant. Never exaggerated.
+"""
 lip_sharpness = st.slider("👄 Lip Sync Sharpness", 1, 100, 70)
 expression_intensity = st.slider("😊 Expression Intensity", 0, 100, 45)
-
+performance_energy = st.slider("🎭 Performance Energy", 0, 100, 60)
 natural_blink = st.checkbox("👀 Natural Blink Engine", value=True)
 micro_gaze = st.checkbox("✨ Micro Gaze Humanization", value=True)
 
@@ -87,6 +136,24 @@ if st.button("🚀 GENERATE MUSIC VIDEO"):
         st.warning("Connecting to Replicate servers... Processing humanized lip-sync animation.")
 
         try:
+            movement_prompt = get_performance_energy_prompt(performance_energy)
+
+            final_prompt = f"""
+Performance Direction:
+{performance_direction}
+
+BFF Notes:
+{bff_box}
+
+Movement:
+{movement_prompt}
+
+Lip Sync Sharpness: {lip_sharpness}
+Expression Intensity: {expression_intensity}
+Natural Blink: {natural_blink}
+Micro Gaze: {micro_gaze}
+"""
+
             client = replicate.Client(api_token=replicate_api_token)
 
             output = client.run(
@@ -94,6 +161,7 @@ if st.button("🚀 GENERATE MUSIC VIDEO"):
                 input={
                     "audio": audio_track,
                     "image": singer1,
+                    "prompt": final_prompt,
                 }
             )
 
